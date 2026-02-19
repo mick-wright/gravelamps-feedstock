@@ -50,7 +50,7 @@ requirements:
 test:
   imports:
     - gravelamps
-    - gravelamps.lensing.point
+    - gravelamps.models.isolated_point
   commands:
     - pip check
     - gravelamps_inference --help
