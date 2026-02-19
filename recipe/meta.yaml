@@ -1,20 +1,20 @@
 {% set name = "gravelamps" %}
-{% set version = "2.6.5" %}
+{% set version = "3.0.0" %}
 
 package:
   name: {{ name|lower }}
   version: {{ version }}
 
 source:
-  url: https://git.ligo.org/mick.wright/Gravelamps/-/archive/{{ version }}/Gravelamps-{{ version }}.tar.gz
-  sha256: 89db867b73f63487823209310efe4c2d56388233f9da807b23fe84548999c855
+  url: https://git.ligo.org/link/pre-merger-software/gravelamps/-/archive/{{ version }}/gravelamps-{{ version }}.tar.gz
+  sha256: 747cee022662821ac822c1f5dfdada797bb5c0d3795ec1f2e711af83aa3fe378
 build:
   entry_points:
     - gravelamps_inference=gravelamps.inference:main
     - gravelamps_generate_lens=gravelamps.generate_lens:main
-    - gravelamps_generate_interpolator_data=gravelamps.lensing.generic:main
-  script: {{ PYTHON }} -m pip install . -vv
-  number: 1
+    - gravelamps_combine_lens=gravelamps.combine_lens:main
+    - gravelamps_joint_model_selection=gravelamps.joint_model_selection:main
+  number: 0
   skip: true  # [win or py<=39 or py >= 312]
 
 requirements:
@@ -22,6 +22,7 @@ requirements:
     - {{ stdlib("c") }}
     - {{ compiler('cxx') }}
     - make
+    - cmake
     - libgomp  # [linux]
     - llvm-openmp  # [osx]
     - python  # [build_platform != target_platform]
@@ -30,18 +31,21 @@ requirements:
     - python
     - pip
     - setuptools
+    - setuptools-scm
     - libflint
     - libboost-headers
     - {{ compiler('cxx') }}  # [osx]
+    - numpy <2.4.0
   run:
     - python
     - asimov
     - astropy-base <7.0
-    - bilby
-    - bilby_pipe
+    - attrs
+    - bilby <2.7.0
+    - bilby_pipe >=1.3.0
     - python-htcondor
-    - numpy
-    - scipy <1.14.0
+    - {{ pin_compatible('numpy') }}
+    - lalsuite
 
 test:
   imports:
@@ -51,14 +55,13 @@ test:
     - pip check
     - gravelamps_inference --help
     - gravelamps_generate_lens --help
-    - gravelamps_generate_interpolator_data --help
   requires:
     - pip
 
 about:
-  home: https://git.ligo.org/mick.wright/Gravelamps
+  home: https://git.ligo.org/link/pre-merger-software/gravelamps
   summary: Software package designed for running template based analysis of lensed gravitational wave signals to determine the lens profile model. Built on top of the parameter estimation framework, Bilby, and arbitrary precision library arb
-  license: MIT
+  license: GPL-3.0-or-later
   license_file: LICENSE
 
 extra:
