@@ -34,7 +34,6 @@ requirements:
     - setuptools-scm
     - libflint
     - boost
-    - libboost-headers
     - {{ compiler('cxx') }}  # [osx]
     - numpy <2.4.0
   run:
