@@ -44,8 +44,8 @@ requirements:
     - bilby <2.7.0
     - bilby_pipe >=1.3.0
     - python-htcondor
-    - {{ pin_compatible('numpy') }}
     - lalsuite
+    - numpy <2.4.0
 
 test:
   imports:
